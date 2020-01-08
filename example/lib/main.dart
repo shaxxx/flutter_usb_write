@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 
 import 'package:flutter_usb_write/flutter_usb_write.dart';
+import 'package:pedantic/pedantic.dart';
 
 void main() => runApp(MyApp());
 
@@ -22,6 +23,7 @@ class _MyAppState extends State<MyApp> {
   TextEditingController _textController =
       TextEditingController(text: "Hello world");
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool didInit = false;
 
   @override
   void initState() {
@@ -32,7 +34,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Future didChangeDependencies() async {
     super.didChangeDependencies();
-    await _getPorts();
+    if (!didInit) {
+      didInit = true;
+      await _getPorts();
+    }
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -52,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         if (event.event.endsWith("USB_DEVICE_DETACHED")) {
           //check if connected device was detached
           if (event.device.deviceId == _connectedDeviceId) {
-            _disconnect();
+            unawaited(_disconnect());
           }
         }
       });
@@ -73,7 +78,7 @@ class _MyAppState extends State<MyApp> {
               Padding(
                 padding: const EdgeInsets.only(top: 15, bottom: 15),
                 child: Text(
-                    _devices.length > 0
+                    _devices.isNotEmpty
                         ? "Available USB Devices"
                         : "No USB devices available",
                     style: Theme.of(context).textTheme.title),
@@ -173,6 +178,9 @@ class _MyAppState extends State<MyApp> {
         ),
       );
     });
+    if (ports.isEmpty) {
+      ports.add(SizedBox.shrink());
+    }
     return ports;
   }
 
