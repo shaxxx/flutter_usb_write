@@ -1,6 +1,6 @@
 name: flutter_usb_write
 description: Write raw data to USB device on Android.
-version: 0.0.1
+version: 0.1.0
 author: Integrator Dubrovnik
 homepage: http://www.integrator.hr
 
