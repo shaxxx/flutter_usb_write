@@ -21,7 +21,7 @@ void main() {
   UsbDevice device;
 
   setUp(() {
-    device = new UsbDevice(1046, 20497, "USB Portable Printer    ",
+    device = UsbDevice(1046, 20497, "USB Portable Printer    ",
         "STMicroelectronics", 1002, "Printer");
     methodChannel = MockMethodChannel();
     eventChannel = MockEventChannel();
