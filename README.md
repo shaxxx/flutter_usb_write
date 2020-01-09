@@ -89,7 +89,7 @@ First, you'll probably want to list all USB devices connected to you Android dev
 
 ```dart
 try {
-      List<UsbDevice> devices = await _flutterUsbPos.listDevices();
+      List<UsbDevice> devices = await _flutterUsbWrite.listDevices();
     } on PlatformException catch (e) {
       print(e.message);
     }
@@ -101,7 +101,7 @@ To open connection always use vid:pid parameters, method will return new ```UsbD
 ```dart
   Future<UsbDevice> _connect(UsbDevice device) async {
     try {
-      var result = await _flutterUsbPos.open(
+      var result = await _flutterUsbWrite.open(
         vendorId: device.vid,
         productId: device.pid,
       );
@@ -119,14 +119,14 @@ To open connection always use vid:pid parameters, method will return new ```UsbD
 After that you can try to write to device.
 Function returns true if number of bytes written is >= 0;
 ```dart
-bool result = await _flutterUsbPos.write(Uint8List.fromList("Hello world".codeUnits));
+bool result = await _flutterUsbWrite.write(Uint8List.fromList("Hello world".codeUnits));
 ```
 
 Once you're done writing, close connection to release resources.
 ```dart
    Future _disconnect() async {
     try {
-      await _flutterUsbPos.close();
+      await _flutterUsbWrite.close();
     } on PlatformException catch (e) {
       print(e.message);
     }
